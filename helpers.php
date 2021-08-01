@@ -20,12 +20,14 @@ function getVideos(): array
  * Store videos
  *
  * @param $videos
+ * @param string $file
  *
  * @return array
  */
-function storeVideos($videos): array
+function storeVideos($videos, $file = 'videos.json'): array
 {
-    file_put_contents(PATH . '/videos.json', json_encode($videos));
+
+    file_put_contents(PATH . '/' . $file, json_encode($videos));
 
     return getVideos();
 }
@@ -61,10 +63,12 @@ function getVideosOfYoutube(array $videos, int $count, int $q, string $nextPage 
         foreach ($data->{"items"} as $result) {
             $videoId = ($result->{"id"}->{"videoId"});
             /*Insert video to your database*/
-            $videos[$videoId] = [
-                'url'      => 'https://youtu.be/' . $videoId,
-                'video_id' => $videoId,
-            ];
+            if ( ! in_array_r("video_id", $videoId)) {
+                $videos[] = [
+                    'url'      => 'https://youtu.be/' . $videoId,
+                    'video_id' => $videoId,
+                ];
+            }
         }
     }
     $videos = storeVideos($videos);
@@ -73,6 +77,18 @@ function getVideosOfYoutube(array $videos, int $count, int $q, string $nextPage 
         getVideosOfYoutube($videos, $count, $q, $data->nextPageToken);
     }
 
+}
+
+function in_array_r(string $needle, array $haystack, $strict = false)
+{
+    foreach ($haystack as $item) {
+        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item,
+                    $strict))) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function getVideosOfYoutubeData(int $count, string $q, string $nextPage = null)
