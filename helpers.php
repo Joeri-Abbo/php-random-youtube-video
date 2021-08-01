@@ -57,13 +57,15 @@ function getVideosOfYoutube(array $videos, int $count, int $q, string $nextPage 
     }
 
     $data = getVideosOfYoutubeData($count, $q, $nextPage);
-    foreach ($data->{"items"} as $result) {
-        $videoId = ($result->{"id"}->{"videoId"});
-        /*Insert video to your database*/
-        $videos[$videoId] = [
-            'url'      => 'https://youtu.be/' . $videoId,
-            'video_id' => $videoId,
-        ];
+    if ( ! empty($data->{"items"})) {
+        foreach ($data->{"items"} as $result) {
+            $videoId = ($result->{"id"}->{"videoId"});
+            /*Insert video to your database*/
+            $videos[$videoId] = [
+                'url'      => 'https://youtu.be/' . $videoId,
+                'video_id' => $videoId,
+            ];
+        }
     }
     $videos = storeVideos($videos);
 
