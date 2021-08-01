@@ -1,0 +1,20 @@
+<html>
+<body>
+<div id="video_url">link</div>
+</body>
+</html>
+<script>
+    function Get(url) {
+        var Httpreq = new XMLHttpRequest(); // a new request
+        Httpreq.open("GET", url, false);
+        Httpreq.send(null);
+        return Httpreq.responseText;
+    }
+
+    const videos = JSON.parse(Get("https://joeri-abbo.github.io/random-youtube-video/videos.json"));
+
+    const video = videos[Math.floor(Math.random() * videos.length)];
+
+    document.getElementById('video_url').innerHTML = video.url;
+
+</script>
