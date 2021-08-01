@@ -11,10 +11,16 @@
         return Httpreq.responseText;
     }
 
-    const videos = JSON.parse(Get("https://joeri-abbo.github.io/random-youtube-video/videos.json"));
+    const json_data = JSON.parse(Get("https://joeri-abbo.github.io/random-youtube-video/videos.json"));
+    var videos = [];
+
+    for(var i in json_data)
+        videos.push([i, json_data [i]]);
+
 
     const video = videos[Math.floor(Math.random() * videos.length)];
+    console.log(video)
 
-    document.getElementById('video_url').innerHTML = video.url;
+    document.getElementById('video_url').innerHTML = video[1].url;
 
 </script>
