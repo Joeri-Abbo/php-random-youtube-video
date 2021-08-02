@@ -52,7 +52,7 @@ function crawlVideos(array $videos, string $q, int $count = 50)
  * @param int $q
  * @param string|null $nextPage
  */
-function getVideosOfYoutube(array $videos, int $count, int $q, string $nextPage = null)
+function getVideosOfYoutube(array $videos, int $count, string $q, string $nextPage = null)
 {
     if ( ! empty($videos)) {
         var_dump(count($videos));
@@ -63,12 +63,10 @@ function getVideosOfYoutube(array $videos, int $count, int $q, string $nextPage 
         foreach ($data->{"items"} as $result) {
             $videoId = ($result->{"id"}->{"videoId"});
             /*Insert video to your database*/
-            if ( ! in_array_r("video_id", $videoId)) {
-                $videos[] = [
-                    'url'      => 'https://youtu.be/' . $videoId,
-                    'video_id' => $videoId,
-                ];
-            }
+            $videos[$videoId] = [
+                'url'      => 'https://youtu.be/' . $videoId,
+                'video_id' => $videoId,
+            ];
         }
     }
     $videos = storeVideos($videos);
