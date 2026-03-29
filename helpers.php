@@ -52,7 +52,7 @@ function crawlVideos(array $videos, string $q, int $count = 50)
  * @param int $q
  * @param string|null $nextPage
  */
-function getVideosOfYoutube(array $videos, int $count, string $q, string $nextPage = null)
+function getVideosOfYoutube(array $videos, int $count, string $q, ?string $nextPage = null)
 {
     if ( ! empty($videos)) {
         var_dump(count($videos));
@@ -89,7 +89,7 @@ function in_array_r(string $needle, array $haystack, $strict = false)
     return false;
 }
 
-function getVideosOfYoutubeData(int $count, string $q, string $nextPage = null)
+function getVideosOfYoutubeData(int $count, string $q, ?string $nextPage = null)
 {
     $nextPage = $nextPage ? '&pageToken=' . $nextPage : '';
     $url      = "https://www.googleapis.com/youtube/v3/search?key=" . GOOGLE_API . "&maxResults=$count&part=snippet&type=video&q=" . $q . $nextPage;
